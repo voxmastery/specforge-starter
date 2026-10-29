@@ -11,7 +11,7 @@ Every API reply is `{ "success": true, "data": ... }` or `{ "success": false, "e
 No database. Keep data in memory or a JSON file. Role switcher (Author, Reviewer, HOD) instead of login; check permissions on the server for every action.
 
 ## How the app is scored (do not break this)
-The organisers run this repo at the last commit before 16:45: `npm install`, `npm start` (API on port 3001), then
+The organisers run this repo at the last commit before 16:00: `npm install`, `npm start` (API on port 3001), then
 `POST /api/v1/generate` with multipart fields `spec` (required) and `blueprint` (optional) and the AI key in the x-llm-* headers.
 It must return `{ "success": true, "data": { "output": <specforge_output object>, "html": "<the filled spec document>" } }`
 with no clicks and no manual steps. `npm run verify` does exactly this against your running app. Keep it passing.
