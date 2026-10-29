@@ -42,7 +42,7 @@ This sends the sample files to your app's `POST /api/v1/generate`, exactly as th
 `outputs/specforge_output.json` and `outputs/spec.html`, and checks the output file. Upload both files on the portal,
 or zip the whole project (with `outputs/` inside) and upload just the zip.
 
-Your final score comes from the organisers running your code: your last commit before 16:00, or your latest zip if that is
+Your final score comes from the organisers running your code: your last commit before 16:40, or your latest zip if that is
 newer. So `npm install` + `npm start` must work on a fresh copy of your project. Don't commit your key.
 
 ## Handing in a zip instead of a repo
@@ -66,4 +66,4 @@ is a full submission: both files are read from it.
 zip -r specforge.zip . -x "node_modules/*" ".git/*" "dist/*" ".env*"
 ```
 
-Up to 4 MB (this starter zips to about 0.3 MB). Each new zip replaces the last one; zips can be uploaded until 16:00.
+Up to 4 MB (this starter zips to about 0.3 MB). Each new zip replaces the last one; zips can be uploaded until 16:40.
