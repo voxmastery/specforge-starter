@@ -270,5 +270,62 @@
     ],
     "bring_into_app": "Follow the WORKING RULES (plan first, then build, then audit). The folder design/stitch/ has screen designs exported from Google Stitch (HTML and CSS). Rebuild these screens in my existing React app in src/ as React components, keeping the look (layout, colours, spacing, fonts) but wiring every value to the real data my app already has. Rules: do not change anything in server/, the /api/v1 routes, the output file format or the HTML export templates; do not copy any placeholder or sample text from the designs into the code; replace Tailwind or inline styles with classes in src/styles.css unless Tailwind is already installed; keep the role switcher and permission checks working; no new dependencies unless needed. Do one screen at a time, run npm run typecheck after each, and finish with npm run check and npm run verify still passing. List what changed.",
     "if_broken": "My UI change broke something. Undo the last change that touched data or routes, keep only the visual changes in src/, and confirm npm run typecheck, npm run check and npm run verify all pass. Tell me exactly what was reverted."
+  },
+  "beginner_guide": {
+    "name": "Start here: build with any AI agent",
+    "intro": "New to AI coding tools? Follow this card top to bottom. Any agent works. Your agent does the typing; your job is to give it one clear step at a time, run what it built, and check it.",
+    "tools": [
+      "Claude Code: install with  npm install -g @anthropic-ai/claude-code  then run  claude  inside your repo folder.",
+      "Gemini CLI: install with  npm install -g @google/gemini-cli  then run  gemini  inside your repo folder.",
+      "Codex CLI: install with  npm install -g @openai/codex  then run  codex  inside your repo folder.",
+      "Cursor or VS Code with GitHub Copilot: File > Open Folder, pick your repo, open the chat panel and switch it to Agent mode.",
+      "Google Stitch (stitch.withgoogle.com) designs screens only, it does not build the app. Use it next to one of the agents above (see the Stitch card below)."
+    ],
+    "setup": "In a terminal:  git clone <your repo link>  then  cd <repo folder>  then  npm install  then  npm run dev . Open http://localhost:5173 . Keep this terminal running and use a second terminal (or your editor's chat) for the agent.",
+    "loop": [
+      "1. Paste the next prompt into your agent.",
+      "2. Read its plan. If it is unclear, ask it to explain in simple words before it builds.",
+      "3. Let it build, then open the app in the browser and try it yourself.",
+      "4. Run  npm run typecheck . Errors? Use the 'Fix an error' prompt.",
+      "5. Works? Use the 'Save my progress' prompt to commit and push. Then go to the next level."
+    ],
+    "prompts": [
+      {
+        "name": "First prompt: understand the project",
+        "prompt": "I am a beginner. Read README.md, AGENTS.md (or CLAUDE.md / GEMINI.md), kit/specforge-prompt.json and the folders src/, server/, config/ and templates/. Do not change any file yet. Then explain to me in simple words: (1) what this app must do, (2) what already works in the starter, (3) how the app is scored (the output file and the spec document), (4) the rules I must never break, (5) the levels L0 to L5 in order, one line each. End with the exact commands to run the app and to check my work."
+      },
+      {
+        "name": "Plan my day",
+        "prompt": "Using kit/specforge-prompt.json, make me a simple timeline for today from now until 15:45 with one row per level (L0 to L5, then Phase 2), what I will have working at the end of each, and how I will test it. Mark which levels earn points on the leaderboard first. Keep it short. Do not write code."
+      },
+      {
+        "name": "Do the next level",
+        "prompt": "Let's do the next level. Here is the level prompt from the portal: <paste the level prompt here>. Follow the WORKING RULES in AGENTS.md: first show me a short plan (files you will touch and the checks that prove it works) and wait for my OK. Then build it with the smallest change, run npm run typecheck, and tell me exactly how to test it in the browser, step by step."
+      },
+      {
+        "name": "Explain what you just did",
+        "prompt": "Explain what you just changed as if I am new to coding: which files changed, what each change does, and how the pieces connect (browser -> API route -> AI call -> result). Point out anything I should test by hand. Do not change any code."
+      },
+      {
+        "name": "Fix an error",
+        "prompt": "Something is broken. Here is exactly what I did and the full error message: <paste what you clicked and the error from the terminal or the browser console>. Find the cause, explain it in one or two sentences, then make the smallest fix. Do not rewrite working code and do not change the output file format. Run npm run typecheck and tell me how to check that it is fixed."
+      },
+      {
+        "name": "I'm stuck or it's slow",
+        "prompt": "I am stuck on this level and short on time. Tell me the simplest version that still earns points (what to skip, what to keep), then build only that. Keep server/llm.ts as the only place that calls the AI, and keep POST /api/v1/generate returning the format in config/specforge_output.schema.json."
+      },
+      {
+        "name": "Check my score before I upload",
+        "prompt": "Get my app ready to score. Make sure the app is running, then run npm run check and fix every line it prints. Then run npm run verify -- gemini <my key> (or my provider) and fix any error until it passes. Tell me where outputs/specforge_output.json and outputs/spec.html were saved so I can upload them on the portal. Never print or commit my API key."
+      },
+      {
+        "name": "Save my progress (commit and push)",
+        "prompt": "Check git status. Make sure no API key, .env file, node_modules or outputs/ is staged. Then commit everything with a clear one-line message about what now works, and push to my GitHub repo. If the push fails, explain why in simple words and fix it."
+      },
+      {
+        "name": "Start from a Stitch design",
+        "prompt": "I designed my screens in Google Stitch and exported them to design/stitch/. Look at them and make a plan to build the app so it ends up looking like this, but follow the levels in kit/specforge-prompt.json in order: make each level work first, then apply the design to that screen. Never change the API routes, server/ logic, the output file format or the export templates just to match a design. Show me the plan first."
+      }
+    ]
   }
 }
