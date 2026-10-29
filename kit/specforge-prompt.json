@@ -283,11 +283,11 @@
     ],
     "setup": "In a terminal:  git clone <your repo link>  then  cd <repo folder>  then  npm install  then  npm run dev . Open http://localhost:5173 . Keep this terminal running and use a second terminal (or your editor's chat) for the agent.",
     "loop": [
-      "1. Paste the next prompt into your agent.",
-      "2. Read its plan. If it is unclear, ask it to explain in simple words before it builds.",
-      "3. Let it build, then open the app in the browser and try it yourself.",
-      "4. Run  npm run typecheck . Errors? Use the 'Fix an error' prompt.",
-      "5. Works? Use the 'Save my progress' prompt to commit and push. Then go to the next level."
+      "Paste the next prompt into your agent.",
+      "Read its plan. If it is unclear, ask it to explain in simple words before it builds.",
+      "Let it build, then open the app in the browser and try it yourself.",
+      "Run  npm run typecheck . Errors? Use the 'Fix an error' prompt.",
+      "Works? Use the 'Save my progress' prompt to commit and push. Then go to the next level."
     ],
     "prompts": [
       {
