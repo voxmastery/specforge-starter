@@ -285,7 +285,7 @@
       "Cursor or VS Code with GitHub Copilot: File > Open Folder, pick your repo, open the chat panel and switch it to Agent mode.",
       "Google Stitch (stitch.withgoogle.com) designs screens only, it does not build the app. Use it next to one of the agents above (see the Stitch card below)."
     ],
-    "setup": "In a terminal:  git clone <your repo link>  then  cd <repo folder>  then  npm install  then  npm run dev . Open http://localhost:5173 . Keep this terminal running and use a second terminal (or your editor's chat) for the agent. Then get a free AI key (Gemini: aistudio.google.com > Get API key; or OpenRouter / Anthropic), open Settings (gear) in the app, choose the provider, paste the key, set Model to gemini-3.8-flash for Gemini, and press Test key. It must say 'Key works'. Never paste your key into a prompt, a file or a commit.",
+    "setup": "In a terminal:  git clone <your repo link>  then  cd <repo folder>  then  npm install  then  npm run dev . Open http://localhost:5173 . Keep this terminal running and use a second terminal (or your editor's chat) for the agent. Then get a free AI key (Gemini: aistudio.google.com > Get API key; or OpenRouter / Anthropic), open Settings (gear) in the app, choose the provider, paste the key, set Model to gemini-3.5-flash-lite for Gemini, and press Test key. It must say 'Key works'. Never paste your key into a prompt, a file or a commit.",
     "loop": [
       "Paste the next prompt into your agent.",
       "Read its plan. If it is unclear, ask it to explain in simple words before it builds.",
