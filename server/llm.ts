@@ -8,7 +8,7 @@ import { ApiError } from "./envelope.js";
 export type Provider = "gemini" | "openrouter" | "anthropic";
 export type LlmConfig = { provider: Provider; key: string; model: string };
 
-export const DEFAULT_MODELS = { gemini: "gemini-2.5-flash", openrouter: "google/gemini-2.5-flash", anthropic: "claude-sonnet-5-5" } as const;
+export const DEFAULT_MODELS = { gemini: "gemini-3.8-flash", openrouter: "google/gemini-3.8-flash", anthropic: "claude-sonnet-5-5" } as const;
 
 export function configFromRequest(req: Request): LlmConfig {
   const provider = String(req.header("x-llm-provider") ?? "").toLowerCase();

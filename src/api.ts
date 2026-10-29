@@ -3,7 +3,7 @@ export type Provider = "gemini" | "openrouter" | "anthropic";
 export type LlmSettings = { provider: Provider; key: string; model: string };
 
 const STORE = "specforge.llm";
-export const DEFAULT_MODELS: Record<Provider, string> = { gemini: "gemini-2.5-flash", openrouter: "google/gemini-2.5-flash", anthropic: "claude-sonnet-5-5" };
+export const DEFAULT_MODELS: Record<Provider, string> = { gemini: "gemini-3.8-flash", openrouter: "google/gemini-3.8-flash", anthropic: "claude-sonnet-5-5" };
 
 export function loadSettings(): LlmSettings {
   try {
