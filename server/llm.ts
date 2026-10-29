@@ -23,6 +23,27 @@ function stripFences(text: string): string {
   return text.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
 }
 
+// Turns a provider failure into a clear message that says what to fix. Never includes the key.
+function providerError(status: number, raw: string, cfg: LlmConfig): ApiError {
+  let reason = raw;
+  try { const j = JSON.parse(raw.slice(raw.indexOf("{"))); reason = j?.error?.message ?? j?.message ?? raw; } catch { /* plain text */ }
+  reason = String(reason).split(cfg.key).join("***").replace(/\s+/g, " ").trim().slice(0, 180);
+  const low = reason.toLowerCase();
+  const suggest = DEFAULT_MODELS[cfg.provider];
+  if (status === 429 || low.includes("quota") || low.includes("resource_exhausted") || low.includes("rate limit"))
+    return new ApiError(429, "RATE_LIMITED", `Too many requests or quota used up for this key. Wait a minute or use another key. (${reason})`);
+  if (status === 401 || status === 403)
+    return new ApiError(401, "BAD_KEY", `The provider rejected this key. Check you picked the right provider and pasted the whole key. (${reason})`);
+  if (status === 404 || low.includes("not found") || low.includes("is not supported") || low.includes("no longer available") || low.includes("not a valid model"))
+    return new ApiError(400, "BAD_MODEL", `Model "${cfg.model}" is not available for this key. Set Model to ${suggest} in Settings. (${reason})`);
+  if (low.includes("api key") || low.includes("api_key") || low.includes("permission") || low.includes("unauthorized") || low.includes("authentication"))
+    return new ApiError(401, "BAD_KEY", `The provider rejected this key. Check you picked the right provider and pasted the whole key. (${reason})`);
+  if (status === 402 || low.includes("credit") || low.includes("billing"))
+    return new ApiError(402, "NO_CREDIT", `This key has no credit left. (${reason})`);
+  if (!status) return new ApiError(502, "PROVIDER_UNREACHABLE", `Could not reach the AI provider. Check your internet connection. (${reason})`);
+  return new ApiError(502, "PROVIDER_ERROR", `The AI provider failed (HTTP ${status}). (${reason})`);
+}
+
 async function callProvider(prompt: string, cfg: LlmConfig): Promise<string> {
   if (cfg.provider === "gemini") {
     try {
@@ -30,10 +51,7 @@ async function callProvider(prompt: string, cfg: LlmConfig): Promise<string> {
       const r = await ai.models.generateContent({ model: cfg.model, contents: prompt, config: { responseMimeType: "application/json" } });
       return r.text ?? "";
     } catch (e: any) {
-      const status = Number(e?.status ?? e?.code ?? 0);
-      if (status === 429) throw new ApiError(429, "RATE_LIMITED", "The AI provider says too many requests. Wait a minute or switch model.");
-      if (status === 400 || status === 401 || status === 403) throw new ApiError(401, "BAD_KEY", "The provider rejected this key or model. Check Settings.");
-      throw new ApiError(502, "PROVIDER_ERROR", "The AI provider failed. Try again.");
+      throw providerError(Number(e?.status ?? e?.code ?? 0), String(e?.message ?? e), cfg);
     }
   }
   if (cfg.provider === "anthropic") {
@@ -42,9 +60,7 @@ async function callProvider(prompt: string, cfg: LlmConfig): Promise<string> {
       headers: { "x-api-key": cfg.key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({ model: cfg.model, max_tokens: 8000, messages: [{ role: "user", content: prompt }] }),
     });
-    if (r.status === 429 || r.status === 529) throw new ApiError(429, "RATE_LIMITED", "The AI provider says too many requests. Wait a minute or switch model.");
-    if (r.status === 401 || r.status === 403) throw new ApiError(401, "BAD_KEY", "The provider rejected this key. Check Settings.");
-    if (!r.ok) throw new ApiError(502, "PROVIDER_ERROR", `The AI provider failed (HTTP ${r.status}). Check the model name.`);
+    if (!r.ok) throw providerError(r.status === 529 ? 429 : r.status, await r.text(), cfg);
     const j: any = await r.json();
     return (j?.content ?? []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("");
   }
@@ -53,10 +69,9 @@ async function callProvider(prompt: string, cfg: LlmConfig): Promise<string> {
     headers: { Authorization: `Bearer ${cfg.key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: cfg.model, messages: [{ role: "user", content: prompt }], response_format: { type: "json_object" } }),
   });
-  if (r.status === 429) throw new ApiError(429, "RATE_LIMITED", "The AI provider says too many requests. Wait a minute or switch model.");
-  if (r.status === 401 || r.status === 403) throw new ApiError(401, "BAD_KEY", "The provider rejected this key. Check Settings.");
-  if (!r.ok) throw new ApiError(502, "PROVIDER_ERROR", `The AI provider failed (HTTP ${r.status}). Check the model name.`);
+  if (!r.ok) throw providerError(r.status, await r.text(), cfg);
   const j: any = await r.json();
+  if (j?.error) throw providerError(Number(j.error.code) || 502, JSON.stringify(j), cfg);
   return j?.choices?.[0]?.message?.content ?? "";
 }
 
