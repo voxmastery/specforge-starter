@@ -231,5 +231,44 @@
     "AI tools you used",
     "Which track you followed"
   ],
-  "working_rules": "WORKING RULES (start every level with this): 1) Do not code yet. Write a short plan: the files you will change and 3 to 5 checks that prove this level works. 2) Wait for my OK, then build the smallest thing that meets the checks. 3) Run npm run typecheck, then run the app and try the checks yourself. 4) AUDIT: list anything from the checks or from this level that is missing, wrong or hard-coded, and fix it. 5) Tell me in two lines what works and what does not."
+  "working_rules": "WORKING RULES (start every level with this): 1) Do not code yet. Write a short plan: the files you will change and 3 to 5 checks that prove this level works. 2) Wait for my OK, then build the smallest thing that meets the checks. 3) Run npm run typecheck, then run the app and try the checks yourself. 4) AUDIT: list anything from the checks or from this level that is missing, wrong or hard-coded, and fix it. 5) Tell me in two lines what works and what does not.",
+  "ui_design": {
+    "name": "Design your screens with Stitch (optional)",
+    "when": "Optional, not scored. Do it after Level 3 works, or alongside if you are a beginner and want a clear picture of what to build.",
+    "how_to_use": [
+      "Open stitch.withgoogle.com and sign in with your Google account.",
+      "Paste the style prompt first, then one screen prompt at a time. Ask Stitch for changes in plain words until you like it.",
+      "Export each screen as code and save the files in your repo under design/stitch/ (one folder per screen).",
+      "Then paste the 'Bring it into your app' prompt into your AI coding tool. Never let a redesign touch server/ or the output file."
+    ],
+    "style": "Design system for a web app called SpecForge used by university faculty to correct course specifications. Desktop first, also works on a laptop at 1366px. Calm and professional, like a modern document tool: light background, white panels, one accent colour (deep blue or green), clear status colours (green ok, amber warning, red error). Clean sans-serif font, tables that are easy to scan, generous spacing, no stock photos, no gradients. Top bar with the app name on the left, a role switcher (Author, Reviewer, HOD) and the current document status on the right. Left sidebar with steps: Upload, Spec, CO-PO-PSO map, Checks, Workflow, Export. Use placeholder data only.",
+    "screens": [
+      {
+        "name": "1. Upload",
+        "prompt": "SpecForge upload screen. Two upload boxes side by side: 'Course specification' (required, accepts .docx .pdf .html .doc) and 'Question-paper blueprint' (optional). Each box shows the file name, size and a remove button after upload. Below, a big 'Generate corrected spec' button, disabled until a spec is chosen, and a small note 'Your AI key is set in Settings'. Show a progress state with steps Reading files, Choosing template, Mapping COs, Checking, Done."
+      },
+      {
+        "name": "2. Corrected spec",
+        "prompt": "SpecForge corrected-spec screen. Header with course code, course title, credits (L-T-P) and a badge 'Detected: Integrated' or 'Detected: Non-Lab' with a one-line reason. Below, collapsible sections in this order: Course Summary, Course Size and Credits, Course Outcomes (table: CO id, statement, Bloom's level chip), Course Contents (units with topics and hours), Teaching and Learning Methods, Assessment (components with weight %, total must show 100%), Resources. Each section has a small 'edited by AI' marker where text was corrected, and an edit pencil."
+      },
+      {
+        "name": "3. CO-PO-PSO map",
+        "prompt": "SpecForge CO-PO-PSO map screen. A grid: rows CO1 to CO5 (plus a Bloom's level column), columns PO1 to PO11 then PSO columns (the number of PSOs varies by course, show 3). Each cell shows 3, 2, 1 or is empty, coloured by strength (3 darkest). Clicking a cell opens a side panel with the PO statement, the strength and a one-line justification, with buttons to change the value. Legend at the top: 3 very strong, 2 strong, 1 moderate, blank none. Cells that break a rule have a small amber dot."
+      },
+      {
+        "name": "4. Checks and defects",
+        "prompt": "SpecForge checks screen. Top: summary chips (e.g. 3 errors, 2 warnings, 6 passed). Below, a list of defects grouped by section, each row with a severity badge (High, Medium, Low), a defect code in small monospace (like CO_MISSING_IN_TABLE), where it was found (source and section), what is wrong in one sentence, and the fix that was applied. A filter bar for severity and section. Passed checks are collapsed at the bottom."
+      },
+      {
+        "name": "5. Workflow",
+        "prompt": "SpecForge approval screen. A horizontal status tracker: Draft, Submitted, Under Review, Pending HOD, Approved, with a separate red 'Returned' state. Below, the action panel for the current role: Author sees 'Submit for review'; Reviewer sees 'Forward to HOD' and 'Return with comment' (comment box required); HOD sees 'Approve' and 'Return'. Buttons the current role may not use are shown disabled with a tooltip explaining who can. Right column: a history timeline of who did what and when, with comments."
+      },
+      {
+        "name": "6. Export",
+        "prompt": "SpecForge export screen. Left: a paper-like preview of the filled course specification document in the university template (title block, numbered sections, CO table, CO-PO-PSO map table). Right: buttons 'Download HTML', 'Print / Save as PDF' and 'Download output file (JSON)', plus a checklist showing 'Template sections complete', 'No leftover sample text', 'Weights total 100%'."
+      }
+    ],
+    "bring_into_app": "Follow the WORKING RULES (plan first, then build, then audit). The folder design/stitch/ has screen designs exported from Google Stitch (HTML and CSS). Rebuild these screens in my existing React app in src/ as React components, keeping the look (layout, colours, spacing, fonts) but wiring every value to the real data my app already has. Rules: do not change anything in server/, the /api/v1 routes, the output file format or the HTML export templates; do not copy any placeholder or sample text from the designs into the code; replace Tailwind or inline styles with classes in src/styles.css unless Tailwind is already installed; keep the role switcher and permission checks working; no new dependencies unless needed. Do one screen at a time, run npm run typecheck after each, and finish with npm run check and npm run verify still passing. List what changed.",
+    "if_broken": "My UI change broke something. Undo the last change that touched data or routes, keep only the visual changes in src/, and confirm npm run typecheck, npm run check and npm run verify all pass. Tell me exactly what was reverted."
+  }
 }
