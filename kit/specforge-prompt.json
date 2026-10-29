@@ -233,7 +233,7 @@
   ],
   "working_rules": "WORKING RULES (start every level with this): 1) Do not code yet. Write a short plan: the files you will change and 3 to 5 checks that prove this level works. 2) Wait for my OK, then build the smallest thing that meets the checks. 3) Run npm run typecheck, then run the app and try the checks yourself. 4) AUDIT: list anything from the checks or from this level that is missing, wrong or hard-coded, and fix it. 5) Tell me in two lines what works and what does not.",
   "ui_design": {
-    "name": "Design your screens with Stitch (optional)",
+    "name": "Design your screens with Stitch",
     "when": "Optional, not scored. Do it after Level 3 works, or alongside if you are a beginner and want a clear picture of what to build.",
     "how_to_use": [
       "Open stitch.withgoogle.com and sign in with your Google account.",
