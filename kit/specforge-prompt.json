@@ -9,7 +9,7 @@
     "Do one level at a time. Run it, check the 'done when' line, then commit with a message that starts with the level, e.g. 'L3: map with justifications'.",
     "If it breaks, use the level's 'if_broken' prompt. If it works but looks bad, use 'if_ugly'.",
     "Never paste API keys into prompts or commit them. Do not hard-code any course content: the app must work on courses it has never seen.",
-    "Your live score comes from the files you upload. Your FINAL score comes from the organisers running your code: at 16:40 they take your last commit, run npm install and npm start, and call POST /api/v1/generate with the sample files. Keep npm run verify passing.",
+    "Your live score comes from the files you upload. Your FINAL score comes from the organisers running your code: at 17:00 they take your last commit, run npm install and npm start, and call POST /api/v1/generate with the sample files. Keep npm run verify passing.",
     "Before you export or submit, run: npm run check. Fix every line it prints."
   ],
   "stack_header": "STACK RULES (follow in every answer): Build a TypeScript project. Frontend: React 18 with Vite. Backend: Node.js 20 with Express, all routes under /api/v1. Validate data with Zod. Every API reply is JSON shaped { \"success\": true, \"data\": ... } or { \"success\": false, \"error\": { \"message\": \"...\", \"code\": \"MACHINE_CODE\" } } with correct HTTP status codes (400 bad input, 403 not permitted, 404 not found, 500 server error). Never put API keys in source code or commit them: the user enters their own key in the app (see AI PROVIDER RULES). Use a simple role switcher (Author, Reviewer, HOD) instead of real login, and check permissions on the server for every action. No database needed: keep data in memory or in a JSON file. Write simple, readable code. Never hard-code any course content (course code, title, CO text, mappings): the app must work on courses it has never seen. AI PROVIDER RULES (bring your own key): The app has a Settings panel (a gear button in the header) where the user chooses a provider ('gemini' or 'openrouter'), pastes their own API key into a password field, and types a model name, with a 'Test key' button and a 'Clear key' button. The key is saved only in the browser (localStorage) and is sent to the backend in request headers (x-llm-provider, x-llm-key, x-llm-model) on every call that needs the AI. The backend never stores, logs or returns the key, and it never appears in the output file, the README or any commit. All AI calls go through ONE small module (server/llm.ts) with a single function generateJson(prompt, zodSchema, config) that returns validated JSON: for 'gemini' it uses the @google/genai package; for 'openrouter' it uses a plain fetch to https://openrouter.ai/api/v1/chat/completions (OpenAI-compatible, header 'Authorization: Bearer <key>'). Ask for JSON only, strip any code fences from the reply, validate with Zod, retry once on invalid output, and return a clear error on rate limits (HTTP 429) or a missing key ('Add your key in Settings'). Nothing else in the app may call a provider directly.",
@@ -183,11 +183,11 @@
     }
   },
   "phase_2": {
-    "time": "14:35-16:40",
+    "time": "14:35-17:00",
     "rules": [
       "Tag your repo 'baseline' at 14:30. Work after that is Phase 2.",
       "Each improvement is its own commit that says in one line which score section it targets.",
-      "Resubmit to the leaderboard as often as you like. Only the best score counts. The board freezes at 16:40."
+      "Resubmit to the leaderboard as often as you like. Only the best score counts. The board freezes at 17:00."
     ],
     "ideas": {
       "matrix_30_points": [
@@ -220,10 +220,10 @@
   "submission": {
     "ways": [
       "Sign in to the portal with Google. Upload specforge_output.json (80 points) and spec.html (20 points). Your repo link is on your profile.",
-      "Final ranking: the organisers run your code at your last commit before 16:40 (npm install, npm start, POST /api/v1/generate on the sample files) and grade what it returns. Uploads that your code cannot reproduce do not count."
+      "Final ranking: the organisers run your code at your last commit before 17:00 (npm install, npm start, POST /api/v1/generate on the sample files) and grade what it returns. Uploads that your code cannot reproduce do not count."
     ],
     "scoring": "Out of 100: output file 80 (CO-PO-PSO map 24, defects 20, course details 8, course outcomes 8, hours and assessment 8, template 4, units 4, summary 4) and spec document 20 (template sections, no leftover sample text, right template, course details, course outcomes, map matches your JSON).",
-    "close": "16:40. The board at that moment is final, then verified by running your code.",
+    "close": "17:00. The board at that moment is final, then verified by running your code.",
     "if_score_is_zero": "Your file does not match the format. Read the errors shown, fix them and resubmit. The usual causes: input_id is not exactly SAMPLE, an extra key, a missing key, credits not written as 3:0:1, or a wrong defect code."
   },
   "readme_must_include": [
@@ -300,7 +300,7 @@
       },
       {
         "name": "Plan my day",
-        "prompt": "Using kit/specforge-prompt.json, make me a simple timeline for today from now until 16:40 with one row per level (L0 to L5, then Phase 2), what I will have working at the end of each, and how I will test it. Mark which levels earn points on the leaderboard first. Keep it short. Do not write code."
+        "prompt": "Using kit/specforge-prompt.json, make me a simple timeline for today from now until 17:00 with one row per level (L0 to L5, then Phase 2), what I will have working at the end of each, and how I will test it. Mark which levels earn points on the leaderboard first. Keep it short. Do not write code."
       },
       {
         "name": "Do the next level",
